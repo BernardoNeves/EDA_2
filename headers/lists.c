@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "lists.h"
@@ -7,14 +6,11 @@ int getInt(int min, int max) // TODO Optimize and move to another file
 {
     int choiceInt = min - 1;
     char choiceChar;
-    // printf("\n");
     while (choiceInt > max || choiceInt < min)
     {
-        // printf("\t> ");
         scanf(" %d", &choiceInt);
         scanf("%c", &choiceChar);
     }
-    // system("cls");
     return choiceInt;
 }
 
