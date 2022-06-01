@@ -19,6 +19,7 @@ void mainMenu()
     printf("Type the name of the file you want to open.\n");
     char fileName[50];
     scanf(" %s", &fileName);
+    system("cls");
     job *jobHead = read(fileName);
     if (jobHead == NULL)
         printf("\n\tError: File could not be opened.\n\n");
@@ -29,44 +30,52 @@ void mainMenu()
         for (int choice; choice != 0;)
         {
             printf("\t--- MAIN MENU ---\n"
-                   "\t Enter 1 - List \n"
-                   "\t Enter 2 - Add Operation\n"
-                   "\t Enter 3 - Remove Operation\n"
-                   "\t Enter 4 - Alter Operation\n"
-                   "\t Enter 5 - Minimum Time\n"
-                   "\t Enter 6 - Maximum Time\n"
-                   "\t Enter 7 - Average Time\n"
+                   "\t Enter 1 - List ProcessPlan \n"
+                   "\t Enter 2 - List Job \n"
+                   "\t Enter 3 - Add Operation\n"
+                   "\t Enter 4 - Remove Operation\n"
+                   "\t Enter 5 - Add Job\n"
+                   "\t Enter 6- Remove Job\n"
+                   "\t Enter 7 - Minimum Time\n"
+                   "\t Enter 8 - Maximum Time\n"
+                   "\t Enter 9 - Average Time\n"
                    "\n\t Enter 0 - Quit\n\n\t> ");
 
-            choice = getInt(0, 7);
+            choice = getInt(0, 10);
             system("cls");
             printf("\n");
             switch (choice)
             {
-            case 1:
+            case 1: // List ProcessPlan
+                printProcessPlan(jobHead);
+                break;
+            case 2: // List Job
                 printf("Select a job to print: ");
                 printJobList(findJob(jobHead, getInt(1, totalJobCount(jobHead))));
                 break;
-            case 2:
+            case 3: // Add Operation
+                userAddOperation(jobHead);
                 break;
-            case 3:
+            case 4: // Remove Operation
+                userRemoveOperation(jobHead);
                 break;
-            case 4:
+            case 5: // Add Job
+                userAddJob(jobHead);
                 break;
-            case 5:
-                printProcessPlanMinTime(jobHead);
-                // printf("Select a job to print minimum time: ");
-                // printJobMinTime(findJob(jobHead, getInt(1, totalJobCount(jobHead))));
+            case 6: // Remove Job
+                userRemoveJob(jobHead);
                 break;
-            case 6:
+            case 7: // Minimum Time
+                printf("Select a job to print minimum time: ");
+                printJobMinTime(findJob(jobHead, getInt(1, totalJobCount(jobHead))));
+                break;
+            case 8: // Maximum Time
                 printf("Select a job to print maximum time: ");
                 printJobMaxTime(findJob(jobHead, getInt(1, totalJobCount(jobHead))));
                 break;
-            case 7:
+            case 9: // Average Time
                 printf("Select a job to print average time: ");
                 printJobAverageTime(findJob(jobHead, getInt(1, totalJobCount(jobHead))));
-                break;
-            case 0:
                 break;
             default:
                 printf("\n\t//Invalid Option//\n\n");
@@ -91,6 +100,7 @@ void printProcessPlan(job *jobHead)
     for (job *jobTmp = jobHead; jobTmp != NULL; jobTmp = jobTmp->next)
         printJobList(jobTmp);
 }
+
 void printJobList(job *jobHead)
 {
     printf("\n\nJob: %d\n", jobHead->jobNumber);
@@ -152,174 +162,55 @@ void printOperationAverageTime(operation *operationHead)
     printf("Average Time for Operation %d: %.2f\n", operationHead->operationNumber, timeAverageOperation(operationHead));
 }
 
-//TODO MOVE THIS TO A NEW FILE AND SEPARATE PRINTS FROM CALCULATIONS AND FUNCTIONS
-void userCreateOperation(job *jobHead) // TODO Optimize
+void userAddOperation(job *jobHead)
 {
-    job *jobTmp = jobHead;
+    printProcessPlan(jobHead);
+    printf("\nSelect a job: ");
+    job *jobTmp = findJob(jobHead, getInt(1, totalJobCount(jobHead)));
+    machine *machineTmp, *machineHead = NULL;
     operation *operationTmp;
-    operation *operationHead;
-    machine *machineTmp;
-    machine *machineHeadTmp;
-    machine *machineHead = NULL;
-    int machineNumber = 1;
-    int operationNumber;
-    int jobNumber;
-
-    // select job and operation order
-    printf("Jobs:\n");
-    while (jobTmp->next != NULL)
+    if (jobTmp == NULL)
     {
-        printf("%d; ", jobTmp->jobNumber);
-        jobNumber = jobTmp->jobNumber;
-        jobTmp = jobTmp->next;
+        printf("\n\tJob not found\n\n");
+        return;
     }
-    printf("\nSelect Job: ");
-    jobTmp = findJob(jobHead, getInt(1, jobNumber));
-
-    printf("\nOperation Order Number: ");
-    scanf(" %d", &operationNumber);
-
-    //  create machines
-    while (machineNumber != 0)
+    printf("\nSelect Operation order: ");
+    for (int machineNumber; machineNumber != 0;)
     {
-        printf("\nMachine Number: ");
-        scanf(" %d", &machineNumber);
+        printf("\nSelect a machine number: ");
+        machineNumber = getInt(0, 100);
+        if (machineNumber == 0)
+            break;
         machineTmp = createNewMachine(machineNumber);
         machineHead = insertAtMachineEnd(&machineHead, machineTmp);
-
-        printf("\nMachine %d Time: ", machineTmp->machineNumber);
-        scanf(" %d", &machineNumber);
-        machineTmp->machineTime = machineNumber;
-        machineTmp = machineHead;
-
-        printf("Enter 0 to stop adding machines: ");
-        scanf(" %d", &machineNumber);
+        printf("\nSelect a time: ");
+        machineTmp->machineTime = getInt(0, 100);
     }
-
-    // Create Operation
-    operationTmp = createNewOperation(operationNumber, jobTmp->jobNumber, &machineHead);
-    while (jobTmp->operationHeadPointer->prev != NULL)
-    {
-        jobTmp->operationHeadPointer = jobTmp->operationHeadPointer->prev;
-    }
-    insertAfterOperation(findOperation(jobTmp->operationHeadPointer, operationNumber - 1), operationTmp);
-    orderJob(jobHead);
+    printf("\n\tOperation added successfully\n\n");
+    operationTmp = createNewOperation(0, jobTmp->jobNumber, &machineHead);
+    jobTmp->operationHeadPointer = insertAtOperationEnd(&(jobTmp->operationHeadPointer), operationTmp);
+    orderOperation(jobTmp->operationHeadPointer);
 }
 
-void userRemoveOperation(job *jobHead) // TODO Optimize
+void userAddJob(job *jobHead)
 {
-    job *jobTmp = jobHead;
-    operation *operationTmp;
-    machine *machineTmp;
-    machine *machineHeadTmp;
-    machine *machineHead = NULL;
-    int machineNumber = 1;
-    int operationNumber;
-    int jobNumber;
-
-    printf("Jobs:\n");
-    while (jobTmp->next != NULL)
-    {
-        printf("%d; ", jobTmp->jobNumber);
-        jobNumber = jobTmp->jobNumber;
-        jobTmp = jobTmp->next;
-    }
-    printf("\nSelect Job: ");
-    jobTmp = findJob(jobHead, getInt(1, jobNumber));
-    operationTmp = jobTmp->operationHeadPointer;
-
-    printf("\nOperation Number: ");
-    scanf(" %d", &operationNumber);
-
-    while (operationTmp->next != NULL)
-    {
-        operationTmp = operationTmp->next;
-    }
-    while (operationTmp->prev != NULL)
-    {
-        machineHeadTmp = operationTmp->machineHeadPointer;
-        operationTmp->machineHeadPointer = machineTmp;
-        machineTmp = machineHeadTmp;
-        operationTmp = operationTmp->prev;
-        if (operationTmp->next->operationNumber == operationNumber)
-            break;
-    }
-
-    while (operationTmp->next != NULL)
-    {
-        operationTmp = operationTmp->next;
-    }
-    operationTmp->prev->next = NULL;
-    free(operationTmp);
+    operation *operationTmp = NULL;
+    insertAtJobEnd(&jobHead, createNewJob(totalJobCount(jobHead) + 1, &operationTmp));
 }
 
-void userAlterOperation(job *jobHead) // TODO Optimize
+void userRemoveJob(job *jobHead)
 {
-    job *jobTmp = jobHead;
-    operation *operationTmp, *operationTmp2;
-    machine *machineTmp, *machineHeadTmp, *machineHead = NULL;
-    int machineNumber = 1, operationNumber, jobNumber, choice;
+    printf("\nSelect job to remove: ");
+    job *jobTmp = findJob(jobHead, getInt(1, totalJobCount(jobHead)));
+    removeJob(&jobHead, &jobTmp);
+}
 
-    printf("Jobs:\n");
-    while (jobTmp->next != NULL)
-    {
-        printf("%d; ", jobTmp->jobNumber);
-        jobNumber = jobTmp->jobNumber;
-        jobTmp = jobTmp->next;
-    }
-    printf("\nSelect Job: ");
-    jobTmp = findJob(jobHead, getInt(1, jobNumber));
-
-    printf("\nOperation Number: ");
-    scanf(" %d", &operationNumber);
-
-    operationTmp = findOperation(jobTmp->operationHeadPointer, operationNumber);
-
-    printf("\t--- Alter Operation ---\n"
-           "\t Enter 1 - Add Machine \n"
-           "\t Enter 2 - Remove Machine \n"
-           "\t Enter 3 - Swap Operation Order \n"
-           "\n\t Enter 0 - back\n");
-
-    choice = getInt(0, 5);
-    switch (choice)
-    {
-    case 1:
-        while (machineNumber != 0)
-        {
-            machineHead = operationTmp->machineHeadPointer;
-            printf("\nMachine Number: ");
-            scanf(" %d", &machineNumber);
-            machineTmp = createNewMachine(machineNumber);
-            machineHead = insertAtMachineEnd(&machineHead, machineTmp);
-
-            printf("\nMachine %d Time: ", machineTmp->machineNumber);
-            scanf(" %d", &machineNumber);
-            machineTmp->machineTime = machineNumber;
-            machineTmp = machineHead;
-
-            printf("Enter 0 to stop adding machines: ");
-            scanf(" %d", &machineNumber);
-        }
-        break;
-    case 2:
-        printf("\nMachine Number: ");
-        scanf(" %d", &machineNumber);
-        machineTmp = findMachine(jobTmp->operationHeadPointer->machineHeadPointer, machineNumber);
-        removeMachine(&operationTmp->machineHeadPointer, machineTmp->machineNumber);
-        break;
-    case 3:
-        printf("\n Swap operation %d with: ", operationTmp->operationNumber);
-        scanf("%d", &operationNumber);
-        operationTmp2 = findOperation(jobTmp->operationHeadPointer, operationNumber);
-        machineTmp = operationTmp->machineHeadPointer;
-        operationTmp->machineHeadPointer = operationTmp2->machineHeadPointer;
-        operationTmp2->machineHeadPointer = machineTmp;
-        break;
-    case 0:
-        break;
-    default:
-        printf("\n\t//Invalid Option//\n\n");
-        break;
-    }
+void userRemoveOperation(job *jobHead)
+{
+    printProcessPlan(jobHead);
+    printf("\nSelect a job: ");
+    job *jobTmp = findJob(jobHead, getInt(1, totalJobCount(jobHead)));
+    printf("\nSelect Operation to remove: ");
+    operation *operationTmp = findOperation(jobTmp->operationHeadPointer, getInt(1, totalOperationCountJob(jobTmp)));
+    removeOperation(&(jobTmp)->operationHeadPointer, &(operationTmp));
 }

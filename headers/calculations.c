@@ -3,27 +3,6 @@
 #include "lists.h"
 #include "calculations.h"
 
-// float timeMinProcessPlan(job *jobHead)
-// {
-// float totalTime = 0.0;
-// for (int i = 0, machineCount = 0; i < totalMachineCountProcessPlan(jobHead); i++, machineCount = 0)
-//     for (job *jobTmp = jobHead; jobTmp != NULL; jobTmp = jobTmp->next)
-//         for (operation *operationTmp = jobTmp->operationHeadPointer; operationTmp != NULL; operationTmp = operationTmp->next)
-//             for (machine *machineTmp = operationTmp->machineHeadPointer; machineTmp != NULL; machineTmp = machineTmp->next)
-//             {
-//                 machineCount++;
-//                 if (machineCount == i)
-//                 {
-//                     totalTime += operationTmp->machineHeadPointer->machineTime;
-//                     operationTmp = operationTmp->next;
-//                     break;
-//                 }
-//                 else
-//                     totalTime += operationTmp->machineHeadPointer->machineTime;
-
-//             }
-// }
-
 float timeMinProcessPlan(job *jobHead)
 {
     float totalTime = 0;
@@ -79,6 +58,14 @@ float timeAverageJob(job *jobHead)
     return totalTime;
 }
 
+float totalMachineTimeOperation(operation *operationHead)
+{
+    float totalTime = 0;
+    for (machine *machineTmp = operationHead->machineHeadPointer; machineTmp != NULL; machineTmp = machineTmp->next)
+        totalTime += machineTmp->machineTime;
+    return totalTime;
+}
+
 float totalJobCount(job *jobHead)
 {
     float jobCount = 0;
@@ -86,12 +73,13 @@ float totalJobCount(job *jobHead)
         jobCount++;
     return jobCount;
 }
-float totalMachineTimeOperation(operation *operationHead)
+
+float totalOperationCountJob(job *jobHead)
 {
-    float totalTime = 0;
-    for (machine *machineTmp = operationHead->machineHeadPointer; machineTmp != NULL; machineTmp = machineTmp->next)
-        totalTime += machineTmp->machineTime;
-    return totalTime;
+    float operationCount = 0;
+    for (operation *operationTmp = jobHead->operationHeadPointer; operationTmp != NULL; operationTmp = operationTmp->next)
+        operationCount++;
+    return operationCount;
 }
 
 float totalMachineCountProcessPlan(job *jobHead)

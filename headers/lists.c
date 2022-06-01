@@ -32,31 +32,31 @@ machine *createNewMachine(int machineNumber)
     return result;
 }
 
-job insertAfterJob(struct job *jobToInsertAfter, struct job *jobToInsert)
+job *insertAfterJob(job *jobToInsertAfter, job *jobToInsert)
 {
-    jobToInsert->next = jobToInsertAfter->next;
-    jobToInsert->next->prev = jobToInsert;
-    jobToInsertAfter->next = jobToInsert;
-    jobToInsert->prev = jobToInsertAfter;
-    return *jobToInsert;
+    *jobToInsert->next = *jobToInsertAfter->next;
+    *jobToInsert->next->prev = *jobToInsert;
+    *jobToInsertAfter->next = *jobToInsert;
+    *jobToInsert->prev = *jobToInsertAfter;
+    return jobToInsert;
 }
 
-operation insertAfterOperation(struct operation *operationToInsertAfter, struct operation *operationToInsert)
+operation *insertAfterOperation(operation *operationToInsertAfter, operation *operationToInsert)
 {
-    operationToInsert->next = operationToInsertAfter->next;
-    operationToInsert->next->prev = operationToInsert;
-    operationToInsertAfter->next = operationToInsert;
-    operationToInsert->prev = operationToInsertAfter;
-    return *operationToInsert;
+    *operationToInsert->next = *operationToInsertAfter->next;
+    *operationToInsert->next->prev = *operationToInsert;
+    *operationToInsertAfter->next = *operationToInsert;
+    *operationToInsert->prev = *operationToInsertAfter;
+    return operationToInsert;
 }
 
-machine insertAfterMachine(struct machine *machineToInsertAfter, struct machine *machineToInsert)
+machine *insertAfterMachine(machine *machineToInsertAfter, machine *machineToInsert)
 {
-    machineToInsert->next = machineToInsertAfter->next;
-    machineToInsert->next->prev = machineToInsert;
-    machineToInsertAfter->next = machineToInsert;
-    machineToInsert->prev = machineToInsertAfter;
-    return *machineToInsert;
+    *machineToInsert->next = *machineToInsertAfter->next;
+    *machineToInsert->next->prev = *machineToInsert;
+    *machineToInsertAfter->next = *machineToInsert;
+    *machineToInsert->prev = *machineToInsertAfter;
+    return machineToInsert;
 }
 
 job *insertAtJobHead(job **jobHead, job *jobToInsert)
@@ -159,6 +159,8 @@ job *findJob(job *jobHead, int jobNumber)
 
 operation *findOperation(operation *operationHead, int operationNumber)
 {
+    if (operationHead == NULL)
+        return NULL;
     for (operation *operationTmp = operationHead; operationTmp != NULL; operationTmp = operationTmp->next)
         if (operationTmp->operationNumber == operationNumber)
             return operationTmp;
@@ -173,50 +175,35 @@ machine *findMachine(machine *machineHead, int machineNumber)
     return NULL;
 }
 
-void *removeJob(job **jobHead, int jobNumber)
+void *removeJob(job **jobHead, job **jobTmp)
 {
-    for (job *jobTmp = *jobHead; jobTmp != NULL; jobTmp = jobTmp->next)
-        if (jobTmp->jobNumber == jobNumber)
-        {
-            while (jobTmp->operationHeadPointer != NULL)
-                removeOperation(&(jobTmp->operationHeadPointer), jobTmp->operationHeadPointer->operationNumber);
-            if (jobTmp == *jobHead)
-                *jobHead = (*jobHead)->next;
-            else
-                jobTmp->prev->next = jobTmp->next;
-            free(jobTmp);
-            break;
-        }
+    while ((*jobTmp)->operationHeadPointer != NULL)
+        removeOperation(&((*jobTmp)->operationHeadPointer), &((*jobTmp)->operationHeadPointer));
+    if ((*jobTmp) == *jobHead)
+        *jobHead = (*jobHead)->next;
+    else
+        (*jobTmp)->prev->next = (*jobTmp)->next;
+    free(jobTmp);
     orderJob(*jobHead);
 }
 
-void *removeOperation(operation **operationHead, int operationNumber)
+void *removeOperation(operation **operationHead, operation **operationTmp)
 {
-    for (operation *operationTmp = *operationHead; operationTmp != NULL; operationTmp = operationTmp->next)
-        if (operationTmp->operationNumber == operationNumber)
-        {
-            while (operationTmp->machineHeadPointer != NULL)
-                removeMachine(&(operationTmp->machineHeadPointer), operationTmp->machineHeadPointer->machineNumber);
-            if (operationTmp == *operationHead)
-                *operationHead = (*operationHead)->next;
-            else
-                operationTmp->prev->next = operationTmp->next;
-            free(operationTmp);
-            break;
-        }
+    while ((*operationTmp)->machineHeadPointer != NULL)
+        removeMachine(&((*operationTmp)->machineHeadPointer), &((*operationTmp)->machineHeadPointer));
+    if ((*operationTmp) == *operationHead)
+        *operationHead = (*operationHead)->next;
+    else
+        (*operationTmp)->prev->next = (*operationTmp)->next;
+    free(operationTmp);
     orderOperation(*operationHead);
 }
 
-void *removeMachine(machine **machineHead, int machineNumber)
+void *removeMachine(machine **machineHead, machine **machineTmp)
 {
-    for (machine *machineTmp = *machineHead; machineTmp != NULL; machineTmp = machineTmp->next)
-        if (machineTmp->machineNumber == machineNumber)
-        {
-            if (machineTmp == *machineHead)
-                *machineHead = (*machineHead)->next;
-            else
-                machineTmp->prev->next = machineTmp->next;
-            free(machineTmp);
-            break;
-        }
+    if ((*machineTmp) == *machineHead)
+        *machineHead = (*machineHead)->next;
+    else
+        (*machineTmp)->prev->next = (*machineTmp)->next;
+    free(machineTmp);
 }

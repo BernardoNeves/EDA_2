@@ -13,5 +13,6 @@ float timeAverageJob(job *jobHead);
 float timeAverageOperation(operation *operationTmp);
 
 float totalJobCount(job *jobHead);
+float totalOperationCountJob(job *jobHead);
 float totalMachineCountOperation(operation *operationTmp);
 float totalMachineCountJob(job *jobHead);

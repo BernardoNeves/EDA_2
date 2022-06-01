@@ -1,13 +1,11 @@
 #include "lists.h"
 #include "files.h"
 
-
 int getInt(int min, int max);
 
 char selectFile();
 
 void mainMenu();
-
 
 void printProcessPlan(job *jobHead);
 void printJobList(job *jobHead);
@@ -24,6 +22,7 @@ void printOperationMaxTime(operation *operationHead);
 void printJobAverageTime(job *jobHead);
 void printOperationAverageTime(operation *operationHead);
 
-void userCreateOperation(job *jobHead);
+void userAddJob(job *jobHead);
+void userRemoveJob(job *jobHead);
+void userAddOperation(job *jobHead);
 void userRemoveOperation(job *jobHead);
-void userAlterOperation(job *jobHead);
