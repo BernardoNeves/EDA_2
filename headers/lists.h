@@ -1,10 +1,3 @@
-/**
- * @brief
- *
- * job Struct contains jobNumber (@@jobNumber)
- * contains a pointer operationHead
- * contains a pointer to the next job
- */
 typedef struct job
 {
     int jobNumber;
@@ -13,13 +6,6 @@ typedef struct job
     struct job *prev;
 } job;
 
-/**
- * @brief
- *
- * operation Struct contains operationNumber (@@operationNumber), jobNumber (@@jobNumber)
- * contains a pointer machineHead
- * contains a pointer to the next and previous operation
- */
 typedef struct operation
 {
     int operationNumber;
@@ -29,12 +15,6 @@ typedef struct operation
     struct operation *prev;
 } operation;
 
-/**
- * @brief
- *
- * machine Struct contains machineNumber (@@machineNumber), machineTime (@@machineTime)
- * contains a pointer to the next and previous machine
- */
 typedef struct machine
 {
     int machineNumber;
@@ -43,45 +23,29 @@ typedef struct machine
     struct machine *prev;
 } machine;
 
-int getInt();
+job *createNewJob(int jobNumber, operation **operationHead);
+operation *createNewOperation(int operationNumber, int jobNumber, machine **machineHead);
+machine *createNewMachine(int machineNumber);
 
-job *read();
-void write();
+job insertAfterJob(struct job *jobToInsertAfter, struct job *jobToInsert);
+operation insertAfterOperation(struct operation *operationToInsertAfter, struct operation *operationToInsert);
+machine insertAfterMachine(struct machine *machineToInsertAfter, struct machine *machineToInsert);
 
-int timeMin();
-int timeMax();
-float timeAverage();
+job *insertAtJobHead(job **jobHead, job *jobToInsert);
+operation *insertAtOperationHead(operation **operationHead, operation *operationToInsert);
+machine *insertAtMachineHead(machine **machineHead, machine *machineToInsert);
 
-void printJobList();
-void printOperationList();
-void printMachineList();
+job *insertAtJobEnd(job **jobHead, job *jobToInsert);
+operation *insertAtOperationEnd(operation **operationHead, operation *operationToInsert);
+machine *insertAtMachineEnd(machine **machineHead, machine *machineToInsert);
 
-void userCreateOperation();
-void userRemoveOperation();
-void userAlterOperation();
+void orderJob(job *jobHead);
+void orderOperation(operation *operationHead);
 
-job *createNewJob();
-operation *createNewOperation();
-machine *createNewMachine();
+job *findJob(job *jobHead, int jobNumber);
+operation *findOperation(operation *operationHead, int operationNumber);
+machine *findMachine(machine *machineHead, int machineNumber);
 
-job insertAfterJob();
-operation insertAfterOperation();
-machine insertAfterMachine();
-
-job *insertAtJobHead();
-operation *insertAtOperationHead();
-machine *insertAtMachineHead();
-
-job *insertAtJobEnd();
-operation *insertAtOperationEnd();
-machine *insertAtMachineEnd();
-
-void orderJob();
-void orderOperation();
-job *findJob();
-operation *findOperation();
-machine *findMachine();
-
-void *removeJob();
-void *removeOperation();
-void *removeMachine();
+void *removeJob(job **jobHead, int jobNumber);
+void *removeOperation(operation **operationHead, int operationNumber);
+void *removeMachine(machine **machineHead, int machineNumber);

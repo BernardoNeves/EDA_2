@@ -5,6 +5,10 @@
         "lists.h": "c",
         "cstdarg": "c",
         "cstdio": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "calculations.h": "c",
+        "conio.h": "c",
+        "menus.h": "c",
+        "files.h": "c"
     }
 }
