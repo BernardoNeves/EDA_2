@@ -1,21 +1,20 @@
 /**
- * Author: Bernardo Neves
- * Email: a23494@alunos.ipca.pt
- * Date: 01/06/2022
- * Description: Main
+ * @file main.c
+ * @author Bernardo Neves (a23494@alunos.ipca.pt)
+ * @brief calls the main menu
+ * @date 2022-06-01
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include "headers/menus.h"
 
+/**
+ * @brief calls the main menu
+ * @return void
+ */
 void main()
 {
     FILE *ProcessPlan;
     system("cls");
     mainMenu(ProcessPlan);
 }
-
-/* //TODO:
- * Implement Job list in the time calculations //TODO DOING IDK FUCK
- * USER list managing functions
- */

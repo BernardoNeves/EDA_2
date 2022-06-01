@@ -1,9 +1,20 @@
+/**
+ * @file Files.c
+ * @author Bernardo Neves (a23494@alunos.ipca.pt)
+ * @brief   Read and write files
+ * @date 2022-06-01
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "lists.h"
 #include "files.h"
 
+/**
+ * @brief   Reads a file and returns a job list
+ * @param   fileName: name of the file to be read
+ * @return  jobHead: head of the job list
+ */
 job *read(char fileName[])
 {
     job *jobHead = NULL, *jobTmp;
@@ -37,6 +48,12 @@ job *read(char fileName[])
     return jobHead;
 }
 
+/**
+ * @brief   Writes a job list to a file
+ * @param   fileName: name of the file to be written
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 job *write(char fileName[], job *jobHead)
 {
     for (int i = 0; i < strlen(fileName); i++)

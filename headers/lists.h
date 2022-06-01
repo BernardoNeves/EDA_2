@@ -1,3 +1,10 @@
+/**
+ * @brief
+ *
+ * job Struct contains jobNumber (@@jobNumber)
+ * contains a pointer operationHead
+ * contains a pointer to the next job
+ */
 typedef struct job
 {
     int jobNumber;
@@ -6,6 +13,13 @@ typedef struct job
     struct job *prev;
 } job;
 
+/**
+ * @brief
+ *
+ * operation Struct contains operationNumber (@@operationNumber), jobNumber (@@jobNumber)
+ * contains a pointer machineHead
+ * contains a pointer to the next and previous operation
+ */
 typedef struct operation
 {
     int operationNumber;
@@ -15,6 +29,12 @@ typedef struct operation
     struct operation *prev;
 } operation;
 
+/**
+ * @brief
+ *
+ * machine Struct contains machineNumber (@@machineNumber), machineTime (@@machineTime)
+ * contains a pointer to the next and previous machine
+ */
 typedef struct machine
 {
     int machineNumber;

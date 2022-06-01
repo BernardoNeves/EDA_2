@@ -1,8 +1,19 @@
+/**
+ * @file calculations.c
+ * @author Bernardo Neves (a23494@alunos.ipca.pt)
+ * @brief   Calculates the time
+ * @date 2022-06-01
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "lists.h"
 #include "calculations.h"
 
+/**
+ * @brief   Calculates the minimum time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float timeMinProcessPlan(job *jobHead)
 {
     float totalTime = 0;
@@ -11,6 +22,11 @@ float timeMinProcessPlan(job *jobHead)
     return totalTime;
 }
 
+/**
+ * @brief   Calculates the minimum time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float timeMinJob(job *jobHead)
 {
     float totalTime = 0;
@@ -19,6 +35,11 @@ float timeMinJob(job *jobHead)
     return totalTime;
 }
 
+/**
+ * @brief   Calculates the minimum time of an operation
+ * @param   operationTmp: head of the operation list
+ * @return  void
+ */
 float timeMinOperation(operation *operationHead)
 {
     machine *minTimeMachine = operationHead->machineHeadPointer;
@@ -28,6 +49,11 @@ float timeMinOperation(operation *operationHead)
     return (float)minTimeMachine->machineTime;
 }
 
+/**
+ * @brief   Calculates the maximum time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float timeMaxJob(job *jobHead)
 {
     float totalTime = 0;
@@ -36,6 +62,11 @@ float timeMaxJob(job *jobHead)
     return totalTime;
 }
 
+/**
+ * @brief   Calculates the maximum time of an operation
+ * @param   operationTmp: head of the operation list
+ * @return  void
+ */
 float timeMaxOperation(operation *operationHead)
 {
     machine *maxTimeMachine = operationHead->machineHeadPointer;
@@ -45,11 +76,21 @@ float timeMaxOperation(operation *operationHead)
     return (float)maxTimeMachine->machineTime;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float timeAverageOperation(operation *operationHead)
 {
     return totalMachineTimeOperation(operationHead) / totalMachineCountOperation(operationHead);
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float timeAverageJob(job *jobHead)
 {
     float totalTime = 0;
@@ -58,6 +99,11 @@ float timeAverageJob(job *jobHead)
     return totalTime;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float totalMachineTimeOperation(operation *operationHead)
 {
     float totalTime = 0;
@@ -66,6 +112,11 @@ float totalMachineTimeOperation(operation *operationHead)
     return totalTime;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float totalJobCount(job *jobHead)
 {
     float jobCount = 0;
@@ -74,6 +125,11 @@ float totalJobCount(job *jobHead)
     return jobCount;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float totalOperationCountJob(job *jobHead)
 {
     float operationCount = 0;
@@ -82,6 +138,11 @@ float totalOperationCountJob(job *jobHead)
     return operationCount;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float totalMachineCountProcessPlan(job *jobHead)
 {
     float machineCount = 0;
@@ -90,6 +151,11 @@ float totalMachineCountProcessPlan(job *jobHead)
     return machineCount;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float totalMachineCountJob(job *jobHead)
 {
     float machineCount = 0;
@@ -98,6 +164,11 @@ float totalMachineCountJob(job *jobHead)
     return machineCount;
 }
 
+/**
+ * @brief   Calculates the total time of a job
+ * @param   jobHead: head of the job list
+ * @return  void
+ */
 float totalMachineCountOperation(operation *operationHead)
 {
     float machineCount = 0;

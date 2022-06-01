@@ -1,3 +1,9 @@
+/**
+ * @file menus.c
+ * @author Bernardo Neves (a23494@alunos.ipca.pt)
+ * @brief Main menu and submenus for the program
+ * @date 2022-06-01
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +11,11 @@
 #include "menus.h"
 #include "calculations.h"
 
+/**
+ * @brief Main menu for the program
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 int getInt(int min, int max)
 {
     for (int choiceInt = min - 1; choiceInt > max || choiceInt < min; scanf("%*c"))
@@ -14,6 +25,11 @@ int getInt(int min, int max)
             printf("\nInvalid input. Please try again.\n");
 }
 
+/**
+ * @brief Main menu for the program
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void mainMenu()
 {
     printf("Type the name of the file you want to open.\n");
@@ -95,12 +111,22 @@ void mainMenu()
     _Exit(0);
 }
 
+/**
+ * @brief Prints the process plan
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printProcessPlan(job *jobHead)
 {
     for (job *jobTmp = jobHead; jobTmp != NULL; jobTmp = jobTmp->next)
         printJobList(jobTmp);
 }
 
+/**
+ * @brief Prints the job list
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printJobList(job *jobHead)
 {
     printf("\n\nJob: %d\n", jobHead->jobNumber);
@@ -108,6 +134,11 @@ void printJobList(job *jobHead)
         printOperationList(operationTmp);
 }
 
+/**
+ * @brief Prints the operation list
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printOperationList(operation *operationHead)
 {
     printf("\nOperation: %d\n\n", operationHead->operationNumber);
@@ -115,17 +146,33 @@ void printOperationList(operation *operationHead)
         printMachineList(machineTmp);
 }
 
+/**
+ * @brief Prints the machine list
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printMachineList(machine *machineHead)
 {
     printf("Machine: %d Time: %.2f\n", machineHead->machineNumber, (float)machineHead->machineTime);
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printProcessPlanMinTime(job *jobHead)
 {
     for (job *jobTmp = jobHead; jobTmp != NULL; jobTmp = jobTmp->next)
         printJobMinTime(jobTmp);
     printf("\n\nMinimum Time for Process Plan: %.2f\n\n", timeMinProcessPlan(jobHead));
 }
+
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printJobMinTime(job *jobHead)
 {
     for (operation *operationTmp = jobHead->operationHeadPointer; operationTmp != NULL; operationTmp = operationTmp->next)
@@ -133,11 +180,21 @@ void printJobMinTime(job *jobHead)
     printf("\n\nMinimum Time for Job %d: %.2f\n\n", jobHead->jobNumber, timeMinJob(jobHead));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printOperationMinTime(operation *operationHead)
 {
     printf("Minimum Time for Operation %d: %.2f\n", operationHead->operationNumber, timeMinOperation(operationHead));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printJobMaxTime(job *jobHead)
 {
     for (operation *operationTmp = jobHead->operationHeadPointer; operationTmp != NULL; operationTmp = operationTmp->next)
@@ -145,11 +202,21 @@ void printJobMaxTime(job *jobHead)
     printf("\n\nMaximum Time for Job %d: %.2f\n\n", jobHead->jobNumber, timeMaxJob(jobHead));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printOperationMaxTime(operation *operationHead)
 {
     printf("Maximum Time for Operation %d: %.2f\n", operationHead->operationNumber, timeMaxOperation(operationHead));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printJobAverageTime(job *jobHead)
 {
     for (operation *operationTmp = jobHead->operationHeadPointer; operationTmp != NULL; operationTmp = operationTmp->next)
@@ -157,11 +224,21 @@ void printJobAverageTime(job *jobHead)
     printf("\n\nAverage Time for Job %d: %.2f\n\n", jobHead->jobNumber, timeAverageJob(jobHead));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void printOperationAverageTime(operation *operationHead)
 {
     printf("Average Time for Operation %d: %.2f\n", operationHead->operationNumber, timeAverageOperation(operationHead));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void userAddOperation(job *jobHead)
 {
     printProcessPlan(jobHead);
@@ -192,12 +269,22 @@ void userAddOperation(job *jobHead)
     orderOperation(jobTmp->operationHeadPointer);
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void userAddJob(job *jobHead)
 {
     operation *operationTmp = NULL;
     insertAtJobEnd(&jobHead, createNewJob(totalJobCount(jobHead) + 1, &operationTmp));
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void userRemoveJob(job *jobHead)
 {
     printf("\nSelect job to remove: ");
@@ -205,6 +292,11 @@ void userRemoveJob(job *jobHead)
     removeJob(&jobHead, &jobTmp);
 }
 
+/**
+ * @brief Adds an operation to a job
+ * @param ProcessPlan Pointer to the file with the process plan
+ * @return void
+ */
 void userRemoveOperation(job *jobHead)
 {
     printProcessPlan(jobHead);
