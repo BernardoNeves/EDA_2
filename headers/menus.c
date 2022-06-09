@@ -95,7 +95,6 @@ void mainMenu()
                 break;
             default:
                 printf("\n\t//Invalid Option//\n\n");
-                mainMenu();
                 break;
             }
             if (choice != 0 && choice != 4)
